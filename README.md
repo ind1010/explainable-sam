@@ -22,6 +22,7 @@ We recommend using a [`conda`](https://docs.conda.io/en/latest/miniconda.html) e
 
 ```bash
 # Create and activate new conda env
+module load anaconda3/2021.5
 conda create -y -n my-conda-env python=3.7.10
 conda activate my-conda-env
 
