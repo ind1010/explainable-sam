@@ -320,7 +320,7 @@ def main(cfg):
             for i in range(num_robot_groups):
                 batch = replay_buffers[i].sample(cfg.batch_size) #CHANGED THIS
                 #batch = replay_buffers[i].sample(10)
-                train_info = train_next(cfg, policy.policy_nets[i], target_nets[i], optimizers[i], batch, policy.apply_transform, cfg.discount_factors[i])
+                train_info = train_next(cfg, policy.policy_nets[i], optimizers[i], batch, policy.apply_transform, cfg.discount_factors[i])
 
                 if cfg.use_predicted_intention:
                     train_info_intention = train_intention(policy.intention_nets[i], optimizers_intention[i], batch, policy.apply_transform)
