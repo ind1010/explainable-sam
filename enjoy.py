@@ -18,8 +18,12 @@ def main(args):
     else:
         env = utils.get_env_from_cfg(cfg, show_gui=True)
 
+    print('CHECKPT: before creating policy')
+
     # Create policy
     policy = utils.get_policy_from_cfg(cfg)
+
+    print('CHECKPT: after creating policy')
 
     # Run policy
     state = env.reset()

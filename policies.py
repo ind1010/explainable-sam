@@ -36,7 +36,7 @@ class DQNPolicy:
         policy_nets = []
         for robot_type in self.robot_group_types:
             num_output_channels = VectorEnv.get_num_output_channels(robot_type)
-            policy_nets.append(torch.nn.DataParallel(
+            policy_nets.append(torch.nn.DataParallel( 
                 networks.FCN(num_input_channels=self.cfg.num_input_channels, num_output_channels=num_output_channels)
             ).to(self.device))
         return policy_nets

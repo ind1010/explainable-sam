@@ -223,8 +223,10 @@ def main(cfg):
     state = env.reset()
     transition_tracker = TransitionTracker(state)
     learning_starts = np.round(cfg.learning_starts_frac * cfg.total_timesteps).astype(np.uint32)
+    #learning_starts = 11
     total_timesteps_with_warm_up = learning_starts + cfg.total_timesteps
     for timestep in tqdm(range(start_timestep, total_timesteps_with_warm_up), initial=start_timestep, total=total_timesteps_with_warm_up, file=sys.stdout):
+    #for timestep in tqdm(range(100), initial=0, total=100, file=sys.stdout):
         # Select an action for each robot
         exploration_eps = 1 - (1 - cfg.final_exploration) * min(1, max(0, timestep - learning_starts) / (cfg.exploration_frac * cfg.total_timesteps))
         if cfg.use_predicted_intention:
@@ -253,7 +255,8 @@ def main(cfg):
         if timestep >= learning_starts and (timestep + 1) % cfg.train_freq == 0:
             all_train_info = {}
             for i in range(num_robot_groups):
-                batch = replay_buffers[i].sample(cfg.batch_size)
+                batch = replay_buffers[i].sample(cfg.batch_size) #CHANGED THIS
+                #batch = replay_buffers[i].sample(10)
                 train_info = train(cfg, policy.policy_nets[i], target_nets[i], optimizers[i], batch, policy.apply_transform, cfg.discount_factors[i])
 
                 if cfg.use_predicted_intention:
