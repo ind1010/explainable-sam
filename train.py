@@ -372,12 +372,14 @@ def main(cfg):
         ################################################################################
         # Checkpointing
 
+        loss_type = "next" # "future"
+
         if (timestep + 1) % cfg.checkpoint_freq == 0 or timestep + 1 == total_timesteps_with_warm_up:
             if not checkpoint_dir.exists():
                 checkpoint_dir.mkdir(parents=True, exist_ok=True)
 
             # Save policy
-            policy_filename = 'policy_{:08d}.pth.tar'.format(timestep + 1)
+            policy_filename = 'policy_{loss_type}_{:08d}.pth.tar'.format(timestep + 1)
             policy_path = checkpoint_dir / policy_filename
             policy_checkpoint = {
                 'timestep': timestep + 1,
@@ -388,7 +390,7 @@ def main(cfg):
             torch.save(policy_checkpoint, str(policy_path))
 
             # Save checkpoint
-            checkpoint_filename = 'checkpoint_{:08d}.pth.tar'.format(timestep + 1)
+            checkpoint_filename = 'checkpoint_{loss_type}_{:08d}.pth.tar'.format(timestep + 1)
             checkpoint_path = checkpoint_dir / checkpoint_filename
             checkpoint = {
                 'timestep': timestep + 1,
@@ -403,7 +405,7 @@ def main(cfg):
             # Save updated config file
             cfg.policy_path = str(policy_path)
             cfg.checkpoint_path = str(checkpoint_path)
-            utils.save_config(log_dir / 'config.yml', cfg)
+            utils.save_config(log_dir / 'config_{loss_type}.yml', cfg)
 
             # Remove old checkpoint
             checkpoint_paths = list(checkpoint_dir.glob('checkpoint_*.pth.tar'))
